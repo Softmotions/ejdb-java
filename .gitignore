@@ -1,0 +1,12 @@
+.codelite/
+Makefile
+*.log
+*.status
+autom4te.cache/
+*.so
+*.so.*
+/target
+/build
+.clang
+compilation.db
+build.properties

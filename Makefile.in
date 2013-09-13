@@ -10,7 +10,6 @@ PACKAGE = @PACKAGE_NAME@
 VERSION = @PACKAGE_VERSION@
 LIBVER = @MYLIBVER@
 LIBREV = @MYLIBREV@
-FORMATVER = @MYFORMATVER@
 
 # Targets
 LIBRARYFILES = @MYLIBRARYFILES@
@@ -19,6 +18,7 @@ LIBRARYFILES = @MYLIBRARYFILES@
 # Install destinations
 prefix = @prefix@
 exec_prefix = @exec_prefix@
+INCLUDEDIR = @includedir@
 LIBDIR = ${exec_prefix}/lib
 DESTDIR =
 
@@ -38,7 +38,7 @@ LIBS = @LIBS@
 # Actions
 #================================================================
 
-all: $(LIBRARYFILES) jejdb tests
+all: $(LIBRARYFILES) jejdb
 	@printf '\n'
 	@printf '#================================================================\n'
 	@printf '# Ready to install.\n'
@@ -47,7 +47,7 @@ all: $(LIBRARYFILES) jejdb tests
 compile-native : $(LIBRARYFILES)
 
 jejdb:
-	ant build
+	ant build.and.test
 
 tests:
 	ant build.and.test
@@ -83,7 +83,6 @@ libjejdb.so.$(LIBVER).$(LIBREV).0 :
 
 libjejdb.so.$(LIBVER) : libjejdb.so.$(LIBVER).$(LIBREV).0
 	ln -f -s libjejdb.so.$(LIBVER).$(LIBREV).0 $@
-
 
 libjejdb.so : libjejdb.so.$(LIBVER).$(LIBREV).0
 	ln -f -s libjejdb.so.$(LIBVER).$(LIBREV).0 $@

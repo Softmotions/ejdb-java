@@ -10,32 +10,24 @@ test -n "$CPPFLAGS" && MYCPPFLAGS="$CPPFLAGS $MYCPPFLAGS"
 test -n "$LDFLAGS" && MYLDFLAGS="$LDFLAGS $MYLDFLAGS"
 
 AC_INIT(jejdb, 1.0.2)
-AC_PREFIX_DEFAULT(/usr)
+MYLIBVER=1
+MYLIBREV=0
 
-# Package information
-MYLIBVER=9
-MYLIBREV=11
-MYFORMATVER="1.0"
+AC_PREFIX_DEFAULT(/usr)
 
 # Targets
 MYLIBRARYFILES=""
 
 # Building flags
 MYCFLAGS="$MYCFLAGS -std=c99 -Wall -fPIC -fsigned-char -O2"
-MYCPPFLAGS="-I. -I. -I../tcejdb -I$JDK_HOME/include -I$JDK_HOME/include/linux -I\$(INCLUDEDIR) -I$HOME/include -I/usr/local/include"
+MYCPPFLAGS="-I. -I\$(INCLUDEDIR)"
 MYCPPFLAGS="$MYCPPFLAGS -D_UNICODE -DNDEBUG -D_GNU_SOURCE=1 -D_REENTRANT -D__EXTENSIONS__"
-MYLDFLAGS="-L. -L\$(LIBDIR) -L$HOME/lib -L/usr/local/lib"
-MYCMDLDFLAGS=""
-MYRUNPATH="\$(LIBDIR)"
-MYLDLIBPATHENV="LD_LIBRARY_PATH"
-MYPOSTCMD="true"
-
+MYLDFLAGS="-L. -L\$(LIBDIR)"
 
 # Messages
 printf '#================================================================\n'
 printf '# Configuring EJDB Java Binding version %s.\n' "$PACKAGE_VERSION"
 printf '#================================================================\n'
-
 
 #================================================================
 # Checking Commands and Libraries
@@ -44,20 +36,21 @@ printf '#================================================================\n'
 # C compiler
 AC_PROG_CC
 
-
 # Checks for libraries.
 AC_CHECK_LIB([c], main)
-AC_CHECK_LIB([m], main)
-AC_CHECK_LIB([pthread], main)
-AC_CHECK_LIB([rt], main)
 AC_CHECK_LIB([tcejdb], main)
-AC_CHECK_LIB([z], main)
+AC_CHECK_HEADERS([tcejdb/ejdb.h tcejdb/ejdb_private.h], true, AC_MSG_ERROR([tcejdb/ejdb.h is required]))
+AC_CHECK_PROG(has_ant, [ant], true)
+
+if test -z $has_ant
+then
+	AC_MSG_ERROR([Apache ant build tool is required])
+fi
 
 
 #================================================================
 # Options
 #================================================================
-
 
 # Internal variables
 enables=""
@@ -68,15 +61,27 @@ AC_ARG_ENABLE(shared,
 if test "$enable_shared" = "no"
 then
   enables="$enables (no-shared)"
-fi
-
-# Shared libraries
-if test "$enable_shared" != "no"
-then
+else 
   MYLIBRARYFILES="$MYLIBRARYFILES libjejdb.so.$MYLIBVER.$MYLIBREV.0"
   MYLIBRARYFILES="$MYLIBRARYFILES libjejdb.so.$MYLIBVER"
   MYLIBRARYFILES="$MYLIBRARYFILES libjejdb.so"
 fi
+
+AC_ARG_WITH(jdk,
+  AC_HELP_STRING([--with-jdk=DIR], [use the specified JDK home]))  
+if test -n "$with_jdk"
+then
+  JDK_HOME="$with_jdk"
+fi
+
+if test -z "$JDK_HOME"  
+then
+  AC_MSG_ERROR([Please specify valid JDK path with --with-jdk option or set JDK_HOME env])	  
+else 
+  MYCPPFLAGS="$MYCPPFLAGS -I$JDK_HOME/include -I$JDK_HOME/include/linux"  
+  enables="$enables (jdk=$JDK_HOME)"
+fi
+
 
 #================================================================
 # Generic Settings
@@ -92,19 +97,16 @@ AC_SUBST(MYLIBRARYFILES)
 AC_SUBST(MYCFLAGS)
 AC_SUBST(MYCPPFLAGS)
 AC_SUBST(MYLDFLAGS)
-AC_SUBST(MYCMDLDFLAGS)
-AC_SUBST(MYRUNPATH)
-AC_SUBST(MYLDLIBPATHENV)
-AC_SUBST(MYPOSTCMD)
 AC_SUBST(PACKAGE_NAME)
 AC_SUBST(PACKAGE_VERSION)
 
 # Targets
 AC_OUTPUT(Makefile)
+AC_OUTPUT(build.properties)
 
 # Messages
 printf '#================================================================\n'
-printf '# Ready to make.\n'
+printf '# Ready to make ejdb-java version %s%s.\n' "$PACKAGE_VERSION" "$enables"
 printf '#================================================================\n'
 
 

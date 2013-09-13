@@ -15,9 +15,10 @@ Installation
 **(A) Installing directly from sources**
 
 ```
-git clone https://github.com/Softmotions/ejdb.git
-cd ./jejdb
-./configure --prefix=<installation prefix> && make && make tests
+git clone https://github.com/Softmotions/ejdb-java.git
+cd ./ejdb-java
+./configure --with-jdk=<path to JDK> --prefix=<installation prefix>
+make
 sudo make install
 ```
 

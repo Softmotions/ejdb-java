@@ -1,4 +1,4 @@
-distr.version=1.0.1
+distr.version=@PACKAGE_VERSION@
 distr.name=jejdb-${distr.version}
 
 distr.base=${basedir}/target
