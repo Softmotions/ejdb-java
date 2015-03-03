@@ -58,6 +58,7 @@
         <mkdir dir="${test.data.dir}"/>
         <mkdir dir="${test.reports.dir}"/>
         <junit printsummary="on" showoutput="yes" haltonfailure="yes" haltonerror="yes" dir="${test.data.dir}" fork="true">
+            <sysproperty key="java.library.path" value="${basedir}"/>
             <env key="LD_LIBRARY_PATH" path="${basedir}"/>
             <formatter type="plain"/>
             <classpath>

@@ -86,3 +86,12 @@ libjejdb.so.$(LIBVER) : libjejdb.so.$(LIBVER).$(LIBREV).0
 
 libjejdb.so : libjejdb.so.$(LIBVER).$(LIBREV).0
 	ln -f -s libjejdb.so.$(LIBVER).$(LIBREV).0 $@
+
+libjejdb.$(LIBVER).$(LIBREV).0.dylib :
+	$(CC) $(CPPFLAGS) $(CFLAGS) -dynamiclib -install_name libjejdb.$(LIBVER).0.dylib -current_version $(LIBVER).$(LIBREV).0 -compatibility_version $(LIBVER) $(LDFLAGS) -o $@ $(SRCDIR)jejdb.c  $(LIBS)
+
+libjejdb.$(LIBVER).dylib : libjejdb.$(LIBVER).$(LIBREV).0.dylib
+	ln -f -s libjejdb.$(LIBVER).$(LIBREV).0.dylib $@
+
+libjejdb.dylib : libjejdb.$(LIBVER).$(LIBREV).0.dylib
+	ln -f -s libjejdb.$(LIBVER).$(LIBREV).0.dylib $@
