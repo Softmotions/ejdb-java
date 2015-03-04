@@ -10,3 +10,5 @@ autom4te.cache/
 .clang
 compilation.db
 build.properties
+
+*.dylib

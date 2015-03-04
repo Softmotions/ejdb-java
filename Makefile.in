@@ -58,7 +58,7 @@ doc:
 install:
 	install -d $(DESTDIR)$(LIBDIR)
 	cp -Rf $(LIBRARYFILES) $(DESTDIR)$(LIBDIR)
-	chmod -R 755 $(DESTDIR)$(LIBDIR)
+	for f in $(LIBRARYFILES); do chmod 755 $(DESTDIR)$(LIBDIR)/`basename $$f`; done
 	@printf '\n'
 	@printf '#================================================================\n'
 	@printf '# Java Bindinig binaries installed to %s.\n' "$(DESTDIR)$(LIBDIR)"
