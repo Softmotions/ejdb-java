@@ -91,7 +91,7 @@ public class EJDBTest extends TestCase {
         qb.field("test", "test")
                 .excludeField("test2");
 
-        EJDBQuery query3 = coll.createQuery(new BSONObject("test", "test"), new BSONObject("$fields", new BSONObject("test2", 0)));
+        EJDBQuery query3 = coll.createQuery(new EJDBQueryBuilder(new BSONObject("test", "test"), null, new BSONObject("$fields", new BSONObject("test2", 0))));
         assertEquals(query3.count(), 1);
 
         rs = query3.find();
