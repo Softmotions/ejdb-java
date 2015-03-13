@@ -2042,7 +2042,7 @@ MYLIBRARYFILES=""
 MYCFLAGS="$MYCFLAGS -std=c99 -Wall -fPIC -fsigned-char -O2"
 MYCPPFLAGS="-I. -I\$(INCLUDEDIR)"
 MYCPPFLAGS="$MYCPPFLAGS -D_UNICODE -DNDEBUG -D_GNU_SOURCE=1 -D_REENTRANT -D__EXTENSIONS__"
-MYLDFLAGS="-L. -L\$(LIBDIR)"
+MYLDFLAGS="-L. -L\$(LIBDIR) -Wl,-rpath,\$(DESTDIR)/\$(LIBDIR)"
 
 # Messages
 printf '#================================================================\n'
@@ -3397,9 +3397,22 @@ if test "$enable_shared" = "no"
 then
   enables="$enables (no-shared)"
 else
-  MYLIBRARYFILES="$MYLIBRARYFILES libjejdb.so.$MYLIBVER.$MYLIBREV.0"
-  MYLIBRARYFILES="$MYLIBRARYFILES libjejdb.so.$MYLIBVER"
-  MYLIBRARYFILES="$MYLIBRARYFILES libjejdb.so"
+  case `uname -s | tr '[A-Z]' '[a-z]'` in
+    darwin*)
+        MYLIBRARYFILES="$MYLIBRARYFILES libjejdb.$MYLIBVER.$MYLIBREV.0.dylib"
+        MYLIBRARYFILES="$MYLIBRARYFILES libjejdb.$MYLIBVER.dylib"
+        MYLIBRARYFILES="$MYLIBRARYFILES libjejdb.dylib"
+        MYLDLIBPATHENV="DYLD_LIBRARY_PATH"
+        ;;
+    mingw*)
+        MYLIBRARYFILES="$MYLIBRARYFILES jejdbdll.dll libjejdbdll.a jejdbdll.def jejdbdll.lib jejdbdll.exp"
+        ;;
+    *)
+        MYLIBRARYFILES="$MYLIBRARYFILES libjejdb.so.$MYLIBVER.$MYLIBREV.0"
+        MYLIBRARYFILES="$MYLIBRARYFILES libjejdb.so.$MYLIBVER"
+        MYLIBRARYFILES="$MYLIBRARYFILES libjejdb.so"
+        ;;
+  esac
 fi
 
 
@@ -3417,7 +3430,7 @@ if test -z "$JDK_HOME"
 then
   as_fn_error $? "Please specify valid JDK path with --with-jdk option or set JDK_HOME env" "$LINENO" 5
 else
-  MYCPPFLAGS="$MYCPPFLAGS -I$JDK_HOME/include -I$JDK_HOME/include/linux"
+  MYCPPFLAGS="$MYCPPFLAGS -I$JDK_HOME/include -I$JDK_HOME/include/`uname -s | tr '[A-Z]' '[a-z]'`"
   enables="$enables (jdk=$JDK_HOME)"
 fi
 
