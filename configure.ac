@@ -9,7 +9,7 @@ test -n "$CFLAGS" && MYCFLAGS="$CFLAGS $MYCFLAGS"
 test -n "$CPPFLAGS" && MYCPPFLAGS="$CPPFLAGS $MYCPPFLAGS"
 test -n "$LDFLAGS" && MYLDFLAGS="$LDFLAGS $MYLDFLAGS"
 
-AC_INIT(jejdb, 1.0.2)
+AC_INIT(jejdb, 1.0.4)
 MYLIBVER=1
 MYLIBREV=0
 
@@ -38,8 +38,8 @@ AC_PROG_CC
 
 # Checks for libraries.
 AC_CHECK_LIB([c], main)
-AC_CHECK_LIB([tcejdb], main)
-AC_CHECK_HEADERS([tcejdb/ejdb.h tcejdb/ejdb_private.h], true, AC_MSG_ERROR([tcejdb/ejdb.h is required]))
+AC_CHECK_LIB([ejdb], main)
+AC_CHECK_HEADERS([ejdb/ejdb.h ejdb/ejdb_private.h], true, AC_MSG_ERROR([ejdb/ejdb.h is required]))
 AC_CHECK_PROG(has_ant, [ant], true)
 
 if test -z $has_ant

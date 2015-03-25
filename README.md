@@ -10,7 +10,7 @@ Installation
 
 * gcc
 * **Java >= 1.6**
-* EJDB C library **libtcejdb** ([from sources](https://github.com/Softmotions/ejdb#manual-installation) or as [debian packages](https://github.com/Softmotions/ejdb/wiki/Debian-Ubuntu-installation))
+* EJDB C library **libejdb** ([from sources](https://github.com/Softmotions/ejdb#building) or as [packages](https://github.com/Softmotions/ejdb#ejdb-binary-package-installation))
 
 **(A) Installing directly from sources**
 
@@ -21,6 +21,10 @@ cd ./ejdb-java
 make
 sudo make install
 ```
+
+*** Note ***
+
+* Ensure that **libejdb** is available from `LD_LIBRARY_PATH` 
 
 One snippet intro
 ---------------------------------

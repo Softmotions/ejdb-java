@@ -1,7 +1,7 @@
 #ifndef JEJDB_H
 #define JEJDB_H
 
-#include <tcejdb/ejdb_private.h>
+#include <ejdb/ejdb_private.h>
 
 #include "org_ejdb_driver_EJDB.h"
 #include "org_ejdb_driver_EJDBCollection.h"

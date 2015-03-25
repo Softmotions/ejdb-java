@@ -57,9 +57,10 @@
         <delete dir="${test.data.dir}"/>
         <mkdir dir="${test.data.dir}"/>
         <mkdir dir="${test.reports.dir}"/>
+        <property environment="env"/>
         <junit printsummary="on" showoutput="yes" haltonfailure="yes" haltonerror="yes" dir="${test.data.dir}" fork="true">
-            <sysproperty key="java.library.path" value="${basedir}"/>
-            <env key="LD_LIBRARY_PATH" path="${basedir}"/>
+            <sysproperty key="java.library.path" value="${basedir}${path.separator}${java.library.path}"/>
+            <env key="LD_LIBRARY_PATH" path="${basedir}${path.separator}${env.LD_LIBRARY_PATH}"/>
             <formatter type="plain"/>
             <classpath>
                 <path refid="lib.junit.classpath"/>
