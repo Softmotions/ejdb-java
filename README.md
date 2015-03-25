@@ -22,9 +22,7 @@ make
 sudo make install
 ```
 
-*** Note ***
-
-* Ensure that **libejdb** is available from `LD_LIBRARY_PATH` 
+**Note**: Ensure that **libejdb** is available from `LD_LIBRARY_PATH` 
 
 One snippet intro
 ---------------------------------
